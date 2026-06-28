@@ -105,6 +105,18 @@ class InfoTab extends StatelessWidget {
                   );
                 }
 
+                if (dashboardState.status == DashboardStatus.failure &&
+                    employees.isEmpty) {
+                  return SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: _InfoErrorState(
+                      message:
+                          dashboardState.errorMessage ??
+                          'Unable to load employee data.',
+                    ),
+                  );
+                }
+
                 if (filtered.isEmpty) {
                   return SliverFillRemaining(
                     hasScrollBody: false,
@@ -232,6 +244,50 @@ class InfoTab extends StatelessWidget {
   }
 }
 
+class _InfoErrorState extends StatelessWidget {
+  const _InfoErrorState({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.cloud_off_rounded,
+              size: 42,
+              color: theme.colorScheme.primary,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Unable to Load Employees',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.72),
+                height: 1.4,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
   const _PinnedHeaderDelegate({required this.height, required this.child});
 
@@ -250,7 +306,7 @@ class _PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    return child;
+    return SizedBox.expand(child: child);
   }
 
   @override

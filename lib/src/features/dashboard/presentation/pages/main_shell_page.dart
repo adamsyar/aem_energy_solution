@@ -63,12 +63,6 @@ class _MainShellPageState extends State<MainShellPage> {
                 currentIndex: currentIndex,
                 onTap: (index) {
                   context.read<NavigationCubit>().setIndex(index);
-                  final distance = (index - currentIndex).abs();
-                  if (distance > 1) {
-                    _pageController.jumpToPage(index);
-                    return;
-                  }
-
                   _pageController.animateToPage(
                     index,
                     duration: const Duration(milliseconds: 280),

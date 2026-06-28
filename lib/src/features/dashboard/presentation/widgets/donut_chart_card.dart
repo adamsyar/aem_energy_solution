@@ -19,14 +19,52 @@ class DonutChartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final values = items.isEmpty
-        ? const [
-            ChartItem(name: 'Donut 1', value: 25),
-            ChartItem(name: 'Donut 2', value: 22),
-            ChartItem(name: 'Donut 3', value: 29),
-            ChartItem(name: 'Donut 4', value: 8),
-          ]
-        : items;
+    final values = items;
+
+    if (values.isEmpty) {
+      return Card(
+        child: Container(
+          decoration: BoxDecoration(
+            color: theme.cardTheme.color,
+            borderRadius: BorderRadius.circular(22),
+            boxShadow: [
+              BoxShadow(
+                color: theme.cardTheme.shadowColor ?? theme.shadowColor,
+                blurRadius: 18,
+                offset: const Offset(0, 7),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.fromLTRB(22, 18, 22, 22),
+          child: AspectRatio(
+            aspectRatio: 1.44,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.donut_large_rounded,
+                    size: 34,
+                    color: theme.colorScheme.primary,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'No donut chart data available.',
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: theme.colorScheme.onSurface.withValues(
+                        alpha: 0.76,
+                      ),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
 
     return Card(
       child: Container(

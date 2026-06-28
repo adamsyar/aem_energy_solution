@@ -10,6 +10,8 @@ import 'package:aem_energy_solution/src/features/auth/presentation/bloc/auth_blo
 import 'package:aem_energy_solution/src/features/dashboard/data/dashboard_repository.dart';
 import 'package:aem_energy_solution/src/features/auth/presentation/pages/login_page.dart';
 import 'package:aem_energy_solution/src/features/dashboard/presentation/pages/main_shell_page.dart';
+import 'package:aem_energy_solution/src/features/dashboard/presentation/widgets/bar_chart_card.dart';
+import 'package:aem_energy_solution/src/features/dashboard/presentation/widgets/donut_chart_card.dart';
 import 'package:aem_energy_solution/src/features/navigation/presentation/bloc/navigation_cubit.dart';
 import 'package:aem_energy_solution/src/features/settings/presentation/bloc/settings_cubit.dart';
 import 'package:flutter/material.dart';
@@ -255,6 +257,30 @@ void main() {
     expect(cubit.state.isDarkMode, isTrue);
 
     await cubit.close();
+  });
+
+  testWidgets('bar chart shows empty-state copy for empty API data', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(body: BarChartCard(items: [])),
+      ),
+    );
+
+    expect(find.text('No bar chart data available.'), findsOneWidget);
+  });
+
+  testWidgets('donut chart shows empty-state copy for empty API data', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(body: DonutChartCard(items: [])),
+      ),
+    );
+
+    expect(find.text('No donut chart data available.'), findsOneWidget);
   });
 }
 
