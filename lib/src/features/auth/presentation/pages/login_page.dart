@@ -42,6 +42,13 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
+    final headingColor = colors.onSurface;
+    final secondaryTextColor = colors.onSurface.withValues(alpha: 0.76);
+    final tertiaryTextColor = colors.onSurface.withValues(alpha: 0.68);
+    final buttonShadow = colors.primary.withValues(
+      alpha: isDarkMode ? 0.34 : 0.24,
+    );
 
     return BlocListener<AuthBloc, AuthState>(
       listenWhen: (previous, current) =>
@@ -53,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
           ..showSnackBar(SnackBar(content: Text(state.errorMessage!)));
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
         body: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
@@ -79,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 34,
                               fontWeight: FontWeight.w800,
                               letterSpacing: -1.0,
-                              color: const Color(0xFF0F1117),
+                              color: headingColor,
                             ),
                           ),
                           const SizedBox(height: 40),
@@ -118,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                                 _obscurePassword
                                     ? Icons.visibility_off_outlined
                                     : Icons.visibility_outlined,
-                                color: const Color(0xFF667198),
+                                color: tertiaryTextColor,
                               ),
                             ),
                             validator: (value) {
@@ -148,9 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                                     borderRadius: BorderRadius.circular(18),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: colors.primary.withValues(
-                                          alpha: 0.24,
-                                        ),
+                                        color: buttonShadow,
                                         blurRadius: 18,
                                         offset: const Offset(0, 10),
                                       ),
@@ -197,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                           TextButton(
                             onPressed: () {},
                             style: TextButton.styleFrom(
-                              foregroundColor: const Color(0xFF3E4561),
+                              foregroundColor: secondaryTextColor,
                             ),
                             child: Text(
                               'Forgot Password?',
@@ -213,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
                               textAlign: TextAlign.center,
                               text: TextSpan(
                                 style: theme.textTheme.titleMedium?.copyWith(
-                                  color: const Color(0xFF16181D),
+                                  color: secondaryTextColor,
                                   fontWeight: FontWeight.w500,
                                 ),
                                 children: const [
@@ -309,15 +314,13 @@ class _AuthInput extends StatelessWidget {
       obscureText: obscureText,
       validator: validator,
       textInputAction: textInputAction,
-      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-        fontWeight: FontWeight.w500,
-        color: const Color(0xFF151826),
-      ),
+      style: Theme.of(
+        context,
+      ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
       decoration: InputDecoration(
         hintText: hintText,
         filled: true,
-        fillColor: Colors.white,
-        prefixIcon: Icon(prefixIcon, color: const Color(0xFF5F6890)),
+        prefixIcon: Icon(prefixIcon),
         suffixIcon: suffixIcon,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,
@@ -325,15 +328,27 @@ class _AuthInput extends StatelessWidget {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: Color(0xFF7F88BA)),
+          borderSide: BorderSide(
+            color: Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: 0.55),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: Color(0xFF7F88BA), width: 1.4),
+          borderSide: BorderSide(
+            color: Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: 0.55),
+            width: 1.4,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: Color(0xFF3F46D8), width: 1.6),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 1.6,
+          ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
